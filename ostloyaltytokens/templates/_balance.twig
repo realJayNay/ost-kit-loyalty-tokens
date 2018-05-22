@@ -1,0 +1,45 @@
+{% extends 'shop/_layouts/main' %}
+
+{% block main %}
+    <div class="row">
+        <div class="twelve columns">
+            {% if currentUser %}
+
+                <h1>My Loyalty Points</h1>
+
+                <table class="u-full-width">
+                    <thead>
+                    <tr>
+                        <th>{{ "OST KIT ID"|t }}</th>
+                        <th>{{ "Total balance"|t }}</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td> {{ uuid }}</td>
+                        <td> {{ balance }}</td>
+                    </tr>
+                </table>
+
+                <h2>My Transactions</h2>
+
+                <table class="u-full-width">
+                    <thead>
+                    <tr>
+                        <th>{{ "Transaction"|t }}</th>
+                        <th>{{ "Order"|t }}</th>
+                        <th>{{ "Timestamp"|t }}</th>
+                        <th>{{ "Status"|t }}</th>
+                        <th>{{ "Balance"|t }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{ craft.ostLoyaltyTokens.transactions|raw }}
+                    </tbody>
+                </table>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
