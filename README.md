@@ -33,7 +33,7 @@ When the plugin is enabled, three event listeners are created:
  The resulting OST KIT ID is stored in an additional user field `OST KIT UUID` that must be setup first. 
  This will be the receiver of the loyalty tokens.
  2. an event listener on the [commerce_orders.onOrderComplete](https://craftcommerce.com/docs/events-reference#commerce_orders.onordercomplete) event to [execute a specific OST KIT 'company_to_user' transaction type](https://dev.ost.com/docs/api_transaction-types_execute.html) when a customer successfully completes on order. A reference to the OST KIT transaction is stored in an additional order field 'OST KIT Transaction UUD' that must be setup first. 
- The resulting OST KIT Transaction ID is stored in an additional order field `OST KIT UUID` that must be setup first.
+ The resulting OST KIT Transaction ID is appended to an additional order field `OST KIT UUID` that must be setup first.
  3. an event listener on the [commerce_payments.onRefundTransaction]() event to return tokens back to the company in case a transaction is refunded. 
  
 The plugin provides a _Token balance_ [Twig](https://twig.symfony.com/doc/2.x/templates.html) template and variable that can be easily integrated to provide an overview of all related blockchain transactions with click-through links to the order details and the transaction details on the blockchain explorer [OST View](https://view.ost.com/).
@@ -48,7 +48,7 @@ The plugin interacts with OST KIT via a PHP client. If you want to use this clie
 - All configuration data that is needed by the plugin to perform its tasks is securely stored in the plugin settings of Craft CMS. A settings page is included and is accessible in the admin console as soon as the plugin is installed. To access the plugin settings page, press the _cog_  icon in the plugins admin area of Craft CMS.
 ![Screenshot](ostloyaltytokens/resources/screenshots/settings.png)
 
-- Setup a custom user field `OST KIT UUID` and a custom order field `OST KIT Transaction UUID'. This is a [Craft CMS feature](https://craftcms.com/features/custom-fields), please see the related documentation for more information on how to setup custom fields and assign the to a model.
+- Setup a custom user field `OST KIT UUID` and a custom order field `OST KIT Transaction UUID`. This is a [Craft CMS feature](https://craftcms.com/features/custom-fields), please see the related documentation for more information on how to setup custom fields and assign the to a model.
 
 - Setup links to the balance overview template that is provided by the plugin to allow the user to see its Branded Token balance from within your web shop frontend site. The screenshot below is an example of how the template looks like in the Craft Commerce sample frontend template. 
 ![Screenshot](ostloyaltytokens/resources/screenshots/balance.png)
@@ -68,6 +68,6 @@ Some things to do, and ideas for potential features:
 * Implement an event listener to debit the customer's wallet when an order is canceled/reject/deleted from the Craft Commerce system. The Wallet API will be available in the third phase of OST alpha testing.
 
 ## Questions, feature requests and bug reports
-If you have questions, have a great idea for the plugin or ran into issues using this plugin: please report them in the project's [Issues](https://github.com/realJayNay/ost-kit-loyalty-card-plugin/issues) area.  
+If you have questions, have a great idea for the plugin or ran into issues using this plugin: please report them in the project's [Issues](https://github.com/realJayNay/ost-kit-loyalty-tokens/issues) area.  
 
 Brought to you by [Jay Nay](https://github.com/realJayNay)

@@ -37,7 +37,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
 
 
         // initialize the OST KIT client
-        require_once 'vendor/OstKitClient.php';
+        require_once 'OstKitClient.php';
         self::$ost = \OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['company_uuid'], self::$settings['base_url'], self::$settings['network_id']);
 
         // listen for new user registrations only
