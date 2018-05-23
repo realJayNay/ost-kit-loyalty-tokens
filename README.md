@@ -32,8 +32,7 @@ When the plugin is enabled, three event listeners are created:
  to [create an OST KIT user](https://dev.ost.com/docs/api_users_create.html) with the same username whenever a user registers. 
  The resulting OST KIT ID is stored in an additional user field `OST KIT UUID` that must be setup first. 
  This will be the receiver of the loyalty tokens.
- 2. an event listener on the [commerce_orders.onOrderComplete](https://craftcommerce.com/docs/events-reference#commerce_orders.onordercomplete) event to [execute a specific OST KIT 'company_to_user' transaction type](https://dev.ost.com/docs/api_transaction-types_execute.html) when a customer successfully completes on order. A reference to the OST KIT transaction is stored in an additional order field 'OST KIT Transaction UUD' that must be setup first. 
- The resulting OST KIT Transaction ID is appended to an additional order field `OST KIT UUID` that must be setup first.
+ 2. an event listener on the [commerce_orders.onOrderComplete](https://craftcommerce.com/docs/events-reference#commerce_orders.onordercomplete) event to [execute a specific OST KIT 'company_to_user' transaction type](https://dev.ost.com/docs/api_transaction-types_execute.html) when a customer successfully completes on order. A reference to the OST KIT transactions is stored in an additional order field `OST KIT Transaction UUD` that must be setup first. 
  3. an event listener on the [commerce_payments.onRefundTransaction]() event to return tokens back to the company in case a transaction is refunded. 
  
 The plugin provides a _Token balance_ [Twig](https://twig.symfony.com/doc/2.x/templates.html) template and variable that can be easily integrated to provide an overview of all related blockchain transactions with click-through links to the order details and the transaction details on the blockchain explorer [OST View](https://view.ost.com/).
@@ -62,10 +61,7 @@ The plugin interacts with OST KIT automatically whenever a user is registered, a
 Some things to do, and ideas for potential features:
 
 * Upgrade to [https://dev.ost.com/docs/api.html](OST KIT REST API v1.0).
-* Allow the user to spend its loyalty points on preconfigured products. The tokens will be transferred back to the company, a transaction with a negative balance will be visible in the transactions overview.
-* Replace the refund event listener with  smart contract that acts as an escrow account and finalizes when the order is delivered.
-* Allow the user to spend its loyalty points as discount on a purchase. This requires BT/OST/Fiat currency exchange functionality, currently not present in OST KIT, but available in v1.0 of the API.
-* Implement an event listener to debit the customer's wallet when an order is canceled/reject/deleted from the Craft Commerce system. The Wallet API will be available in the third phase of OST alpha testing.
+* Replace the refund event listener with a smart contract that acts as an escrow account and finalizes when the order is delivered.
 
 ## Questions, feature requests and bug reports
 If you have questions, have a great idea for the plugin or ran into issues using this plugin: please report them in the project's [Issues](https://github.com/realJayNay/ost-kit-loyalty-tokens/issues) area.  
