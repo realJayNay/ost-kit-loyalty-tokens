@@ -60,7 +60,7 @@ The plugin interacts with OST KIT automatically whenever a user is registered, a
 
 Some things to do, and ideas for potential features:
 
-* Upgrade to [https://dev.ost.com/docs/api.html](OST KIT REST API v1.0).
+* Upgrade to [OST KIT REST API v1.0](https://dev.ost.com/docs/api.html).
 * Replace the refund event listener with a smart contract that acts as an escrow account and finalizes when the order is delivered.
 
 ## Questions, feature requests and bug reports

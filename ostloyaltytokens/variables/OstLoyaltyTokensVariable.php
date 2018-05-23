@@ -4,13 +4,6 @@
  *
  * OST Loyalty Tokens Variable
  *
- * --snip--
- * Craft allows plugins to provide their own template variables, accessible from the {{ craft }} global variable
- * (e.g. {{ craft.pluginName }}).
- *
- * https://craftcms.com/docs/plugins/variables
- * --snip--
- *
  * @author    Jay Nay
  * @copyright Copyright (c) 2018 Jay Nay
  * @link      https://github.com/realJayNay

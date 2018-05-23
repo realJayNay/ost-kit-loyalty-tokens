@@ -4,13 +4,6 @@
  *
  * OstLoyaltyTokens_Transactions Service
  *
- * --snip--
- * All of your plugin’s business logic should go in services, including saving data, retrieving data, etc. They
- * provide APIs that your controllers, template variables, and other plugins can interact with.
- *
- * https://craftcms.com/docs/plugins/services
- * --snip--
- *
  * @author    Jay Nay
  * @copyright Copyright (c) 2018 Jay Nay
  * @link      https://github.com/realJayNay
