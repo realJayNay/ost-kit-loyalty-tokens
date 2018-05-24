@@ -94,7 +94,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      * @return string
      */
     public function getDocumentationUrl() {
-        return 'https://github.com/realJayNay/ostloyaltytokens/blob/master/README.md';
+        return 'https://github.com/realJayNay/ost-kit-loyalty-tokens/blob/master/README.md';
     }
 
     /**
@@ -105,7 +105,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      * @return string
      */
     public function getReleaseFeedUrl() {
-        return 'https://raw.githubusercontent.com/realJayNay/ostloyaltytokens/master/releases.json';
+        return 'https://raw.githubusercontent.com/realJayNay/ost-kit-loyalty-tokens/master/releases.json';
     }
 
     /**
