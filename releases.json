@@ -1,0 +1,10 @@
+[{
+  "version": "0.9.2",
+  "downloadUrl": "https://github.com/realJayNay/ost-kit-loyalty-tokens/archive/v0.9.2.zip",
+  "date": "2018-05-25T19:06:15+01:00",
+  "notes": [
+    "[Added] Implement v0.9.2 of the OST KIT REST API",
+    "[Added] Retrieve token balance for a single user",
+    "[Added] Generate click-through links to OST View"
+  ]
+}]

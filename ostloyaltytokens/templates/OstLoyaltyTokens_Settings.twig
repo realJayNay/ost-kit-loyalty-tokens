@@ -36,14 +36,6 @@
     type: 'password',
     value: settings['secret']}) }}
 
-{{ forms.textField({
-    label: 'OST KIT - Company UUID',
-    instructions: 'Enter the Company UUID for your OST KIT account. This UUID will be used to represent the company in user_to_company and company_to_user transactions. This can be found in the OST KIT developer API console: https://kit.ost.com/developer-api-console.',
-    id: 'company_uuid',
-    name: 'company_uuid',
-    charLimit: 36,
-    value: settings['company_uuid']}) }}
-
 <h3>OST KIT - Advanced configuration</h3>
 {{ forms.textField({
     label: 'OST KIT - REST base URL',
@@ -52,14 +44,6 @@
     name: 'base_url',
     required: true,
     value: settings['base_url']}) }}
-
-{{ forms.textField({
-    label: 'OST KIT - Utility chain ID',
-    instructions: 'Enter the ID of the OST utility chain. This is used to construct hyperlinks to OST View, the OST blockchain explorer.',
-    id: 'network_id',
-    name: 'network_id',
-    required: true,
-    value: settings['network_id']}) }}
 
 {{ forms.textField({
     label: 'OST KIT - Reward transaction type',

@@ -12,6 +12,9 @@
  */
 
 namespace Craft;
+require_once __DIR__ . '../vendor/autoload.php';
+
+use Ost\Kit\Php\Client\OstKitClient;
 
 class OstLoyaltyTokensPlugin extends BasePlugin {
 
@@ -37,8 +40,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
 
 
         // initialize the OST KIT client
-        require_once 'OstKitClient.php';
-        self::$ost = \OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['company_uuid'], self::$settings['base_url'], self::$settings['network_id']);
+        self::$ost = OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['base_url']);
 
         // listen for new user registrations only
         craft()->on('users.onBeforeSaveUser', function (Event $event) {
@@ -194,8 +196,6 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
             'api_key' => array(AttributeType::String, 'label' => 'OST KIT - API key', 'required' => true, 'default' => ''),
             'secret' => array(AttributeType::String, 'label' => 'OST KTI - API secret', 'required' => true, 'default' => ''),
             'base_url' => array(AttributeType::String, 'label' => 'OST KTI - REST base URL', 'default' => 'https://playgroundapi.ost.com'),
-            'network_id' => array(AttributeType::Number, 'label' => 'OST KTI - OST utility chain ID', 'default' => 1409),
-            'company_uuid' => array(AttributeType::String, 'label' => 'OST KIT - Company UUID', 'default' => ''),
             'debug' => array(AttributeType::Bool, 'label' => 'Debug logging', 'default' => false),
             'company_to_user_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - Company-to-user reward transaction type', 'required' => true, 'default' => 'Reward'),
             'user_to_company_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - User-to-Company refund transaction type', 'required' => true, 'default' => 'Refund'),

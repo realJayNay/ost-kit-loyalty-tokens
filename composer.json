@@ -1,0 +1,35 @@
+{
+  "name": "jay-nay/ost-kit-loyalty-tokens",
+  "description": "OST KIT - Loyalty Tokens plugin for Craft Commerce",
+  "homepage": "https://github.com/realJayNay/ost-kit-loyalty-tokens",
+  "type": "craft-plugin",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Jay Nay",
+      "homepage": "https://github.com/realJayNay",
+      "role": "Developer"
+    }
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    },
+    "handle": "ostloyaltytokens",
+    "name": "OST Loyalty Tokens",
+    "description": "Loyalty Tokens plugin for Craft Commerce, built on OST KIT.",
+    "class": "Craft\\OstLoyaltyTokensPlugin"
+  },
+  "support": {
+    "issues": "https://github.com/realJayNay/ost-kit-loyalty-tokens/issues"
+  },
+  "require": {
+    "jay-nay/ost-kit-php-client": "dev-master"
+  },
+  "config": {
+    "platform": {
+      "php": "5.6"
+    }
+  }
+}
