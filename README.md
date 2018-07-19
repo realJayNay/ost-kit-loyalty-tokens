@@ -19,7 +19,7 @@ To install OST Loyalty Tokens, follow these steps:
 5. The plugin folder should be named `ostloyaltytokens` for Craft to see it.  GitHub recently started appending `-master` (the branch name) to the name of the folder for zip file downloads.
 
 OST Loyalty Tokens works on Craft 2.4.x and Craft 2.5.x. 
-This version is compatible with the [OST KIT REST API v0.9.2](https://dev.ost.com/docs/0.9.1/simpletoken.html).
+This version is compatible with the [OST KIT REST API v1.1](https://dev.ost.com).
 
 ## OST Loyalty Tokens Overview
 

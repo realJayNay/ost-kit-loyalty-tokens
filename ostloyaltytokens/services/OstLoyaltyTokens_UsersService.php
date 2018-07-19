@@ -27,8 +27,8 @@ class OstLoyaltyTokens_UsersService extends BaseApplicationComponent {
             $ostUser = OstLoyaltyTokensPlugin::getOstKitClient()->createUser($user->name);
 
             // add it to the user
-            $user->getContent()->ost_kit_uuid = $ostUser['uuid'];
-            $msg = "Your Branded Token economy user ID is '" . $user->getContent()->ost_kit_uuid . "'";
+            $user->getContent()->ost_kit_uuid = $ostUser['id'];
+            $msg = "Your token user ID is '" . $user->getContent()->ost_kit_uuid . "'";
             craft()->userSession->setFlash('ostLoyaltyTokens_notice', $msg);
         } catch (\Exception $e) {
             throw new CHttpException(400, 'Internet connection not available: ' . $e->getMessage());
@@ -40,11 +40,11 @@ class OstLoyaltyTokens_UsersService extends BaseApplicationComponent {
     public function getCurrentUserTokenBalance() {
         $user = craft()->userSession->getUser();
         if ($user != null && isset($user->getContent()->ost_kit_uuid)) {
-            $userTokenBalance = OstLoyaltyTokensPlugin::getOstKitClient()->getUserTokenBalance($user->getContent()->ost_kit_uuid, $user->name);
-            OstLoyaltyTokensPlugin::log("Retrieved Branded Token balance for economy user '$user->name' -> $userTokenBalance");
-            return $userTokenBalance;
+            $balance = OstLoyaltyTokensPlugin::getOstKitClient()->getCombinedBalance($user->getContent()->ost_kit_uuid);
+            OstLoyaltyTokensPlugin::log("Retrieved token balance for user '$user->name' -> ".$balance['available_balance'].' '.$balance['symbol']);
+            return $balance;
         }
-        return 0;
+        return array('available_balance' => 0, 'ost_value' => 0, 'usd_value' => 0, 'symbol' => 'BT', 'name' => 'Branded Token');
     }
 
 }

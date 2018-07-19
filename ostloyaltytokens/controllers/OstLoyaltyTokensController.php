@@ -29,10 +29,9 @@ class OstLoyaltyTokensController extends BaseController {
         $user = craft()->userSession->getUser();
         if ($user != null) {
             try {
-                $this->renderTemplate('ostLoyaltyTokens/_balance.twig', array(
-                    'balance' => craft()->ostLoyaltyTokens_users->getCurrentUserTokenBalance(),
-                    'uuid' => $user->getContent()->ost_kit_uuid
-                ));
+                $balance = craft()->ostLoyaltyTokens_users->getCurrentUserTokenBalance();
+                $balance['uuid'] = $user->getContent()->ost_kit_uuid;
+                $this->renderTemplate('ostLoyaltyTokens/_balance.twig', $balance);
             } catch (HttpException $e) {
                 craft()->userSession->setFlash('ostLoyaltyTokens_error', 'Unable to retrieve token balance: '.$e->getMessage());
             }

@@ -21,18 +21,21 @@ class OstLoyaltyTokens_TransactionsService extends BaseApplicationComponent {
      *     craft()->ostLoyaltyTokens_transactions->getStatusForTransaction()
      */
     public function getStatusForTransaction($transactionUuid) {
-        return OstLoyaltyTokensPlugin::getOstKitClient()->getTransactionStatus($transactionUuid);
+        return OstLoyaltyTokensPlugin::getOstKitClient()->getTransaction($transactionUuid);
     }
 
     private function getStatusForTransactionHtmlRow($orderNumber, $transactions) {
         $rows = '';
+        $token = OstLoyaltyTokensPlugin::getOstKitClient()->getToken();
+        //https://view.ost.com/chain-id/1409/transaction/0x6d6332dc2ac55c2ae022c9f2f5eb62dbac0526e52e43b454258d48ebb4a5473e
+        $viewUrl = 'https://view.ost.com/chain-id/'.$token['ost_utility_balance'][0][0].'/transaction/';
         foreach ($transactions as $transactionUuid) {
             $transaction = $this->getStatusForTransaction($transactionUuid);
-            OstLoyaltyTokensPlugin::log("Transaction $transactionUuid: " . $transaction['status'] . ' (' . $transaction['view_url'] . ')');
+            OstLoyaltyTokensPlugin::log("Transaction $transactionUuid: " . $transaction['status'] . ' (' . $viewUrl.$transaction['transaction_hash'] . ')');
             $orderUrl = "<a href=\"" . UrlHelper::getUrl('shop/customer/order', array('number' => $orderNumber)) . "\">$orderNumber</a>";
-            $viewUrl = '<a target="_blank" title="View transaction ' . $transaction['transaction_hash'] . ' in OST View" href="' . $transaction['view_url'] . '">' . $transactionUuid . '</a>';
+            $viewLink = '<a target="_blank" title="View transaction ' . $transaction['transaction_hash'] . ' in OST View" href="' . $viewUrl.$transaction['transaction_hash'] . '">' . $transactionUuid . '</a>';
             if (isset($transaction['status'])) {
-                $rows .= '<tr><td>' . $viewUrl . '</td><td>' . $orderUrl . '</td><td>' . date('Y-m-d H:i:s', $transaction['transaction_timestamp']) . '</td><td>' . $transaction['status'] . '</td><td>' . $transaction['bt_transfer_value'] . '</td></tr>';
+                $rows .= '<tr><td>' . $viewLink . '</td><td>' . $orderUrl . '</td><td>' . date('Y-m-d H:i:s', $transaction['timestamp']) . '</td><td>' . $transaction['status'] . '</td><td>' . $transaction['amount'].' '.$token['symbol'] . '</td></tr>';
             } else {
                 $rows .= "<tr></tr><td>Transaction #$transactionUuid</td><td>$orderUrl</td><td>?</td><td>unconfirmed</td><td>?</td></tr>";
             }
@@ -54,14 +57,15 @@ class OstLoyaltyTokens_TransactionsService extends BaseApplicationComponent {
 
     public function executeRewardTransaction($order) {
         $settings = OstLoyaltyTokensPlugin::getPluginSettings();
-        $fromUuid = $settings['company_uuid'];
+        $token = OstLoyaltyTokensPlugin::getOstKitClient()->getToken();
+        $fromUuid = $token['company_uuid'];
         $toUuid = craft()->userSession->getUser()->getContent()->ost_kit_uuid;
         $transactionType = $settings['company_to_user_transaction_type'];
         $transactions = array();
         for ($i = 0; $i < $order->getTotalQty(); $i++) {
-            $transaction = OstLoyaltyTokensPlugin::getOstKitClient()->executeTransactionType($fromUuid, $toUuid, $transactionType);
-            $transactionUuid = $transaction['transaction_uuid'];
-            OstLoyaltyTokensPlugin::log("Executed '$transactionType' transaction from '$fromUuid' to '$toUuid' (OST KIT Transaction ID=$transactionUuid)");
+            $transaction = OstLoyaltyTokensPlugin::getOstKitClient()->executeAction($transactionType, $fromUuid, $toUuid);
+            $transactionUuid = $transaction['id'];
+            OstLoyaltyTokensPlugin::log("Executed reward action from '$fromUuid' to '$toUuid' ($transactionUuid)");
             array_push($transactions, $transactionUuid);
         }
 

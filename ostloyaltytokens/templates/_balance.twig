@@ -11,12 +11,16 @@
                     <thead>
                     <tr>
                         <th>{{ "OST KIT ID"|t }}</th>
-                        <th>{{ "Total balance"|t }}</th>
+                        <th>{{ "Token balance"|t }}</th>
+                        <th>{{ "OST value"|t }}</th>
+                        <th>{{ "USD value"|t }}</th>
                     </tr>
                     </thead>
                     <tr>
-                        <td> {{ uuid }}</td>
-                        <td> {{ balance }}</td>
+                        <td>{{ uuid }}</td>
+                        <td>{{ available_balance }} {{ symbol }}</td>
+                        <td>{{ ost_value|round(2, 'floor') }} OST</td>
+                        <td>{{ usd_value|round(2, 'floor') }} USD</td>
                     </tr>
                 </table>
 

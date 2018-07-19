@@ -12,9 +12,9 @@
  */
 
 namespace Craft;
-require_once __DIR__ . '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use Ost\Kit\Php\Client\OstKitClient;
+use ostkit\OstKitClient;
 
 class OstLoyaltyTokensPlugin extends BasePlugin {
 
@@ -27,6 +27,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      * - commerce_orders.onOrderComplete
      *
      * @return mixed
+     * @throws \Exception
      */
     public function init() {
         parent::init();
@@ -37,10 +38,6 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
             OstLoyaltyTokensPlugin::log('Please configure this plugin before use. Disabling...');
             return false;
         }
-
-
-        // initialize the OST KIT client
-        self::$ost = OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['base_url']);
 
         // listen for new user registrations only
         craft()->on('users.onBeforeSaveUser', function (Event $event) {
@@ -116,7 +113,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      * @return string
      */
     public function getVersion() {
-        return '0.9.2';
+        return '1.1';
     }
 
     /**
@@ -128,7 +125,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      * @return string
      */
     public function getSchemaVersion() {
-        return '0.9.2';
+        return '1.1';
     }
 
     /**
@@ -193,9 +190,9 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      */
     protected function defineSettings() {
         return array(
-            'api_key' => array(AttributeType::String, 'label' => 'OST KIT - API key', 'required' => true, 'default' => ''),
-            'secret' => array(AttributeType::String, 'label' => 'OST KTI - API secret', 'required' => true, 'default' => ''),
-            'base_url' => array(AttributeType::String, 'label' => 'OST KTI - REST base URL', 'default' => 'https://playgroundapi.ost.com'),
+            'api_key' => array(AttributeType::String, 'label' => 'OST KIT - API key', 'required' => true, 'default' => null),
+            'secret' => array(AttributeType::String, 'label' => 'OST KTI - API secret', 'required' => true, 'default' => null),
+            'base_url' => array(AttributeType::String, 'label' => 'OST KTI - REST base URL', 'default' => 'https://sandboxapi.ost.com/v1.1'),
             'debug' => array(AttributeType::Bool, 'label' => 'Debug logging', 'default' => false),
             'company_to_user_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - Company-to-user reward transaction type', 'required' => true, 'default' => 'Reward'),
             'user_to_company_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - User-to-Company refund transaction type', 'required' => true, 'default' => 'Refund'),
@@ -231,7 +228,15 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
         return self::$settings;
     }
 
+    /**
+     * @return OstKitClient KIT client
+     * @throws \Exception if the client cannot init
+     */
     public static function getOstKitClient() {
+        if (!isset(self::$ost)) {
+            // initialize the OST KIT client
+            self::$ost = OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['base_url']);
+        }
         return self::$ost;
     }
 
