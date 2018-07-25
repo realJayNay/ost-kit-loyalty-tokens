@@ -1,49 +1,80 @@
 {% extends 'shop/_layouts/main' %}
+{% includecssresource "commerce/charts-explorer.css" %}
 
 {% block main %}
     <div class="row">
+    {% if currentUser %}
         <div class="twelve columns">
-            {% if currentUser %}
 
-                <h1>My Loyalty Points</h1>
-
-                <table class="u-full-width">
-                    <thead>
-                    <tr>
-                        <th>{{ "OST KIT ID"|t }}</th>
-                        <th>{{ "Token balance"|t }}</th>
-                        <th>{{ "OST value"|t }}</th>
-                        <th>{{ "USD value"|t }}</th>
-                    </tr>
-                    </thead>
-                    <tr>
-                        <td>{{ uuid }}</td>
-                        <td>{{ available_balance }} {{ symbol }}</td>
-                        <td>{{ ost_value|round(2, 'floor') }} OST</td>
-                        <td>{{ usd_value|round(2, 'floor') }} USD</td>
-                    </tr>
-                </table>
-
-                <h2>My Transactions</h2>
-
-                <table class="u-full-width">
-                    <thead>
-                    <tr>
-                        <th>{{ "Transaction"|t }}</th>
-                        <th>{{ "Order"|t }}</th>
-                        <th>{{ "Timestamp"|t }}</th>
-                        <th>{{ "Status"|t }}</th>
-                        <th>{{ "Balance"|t }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{ craft.ostLoyaltyTokens.transactions|raw }}
-                    </tbody>
-                </table>
-
-            {% endif %}
+            <h1>My Wallet</h1>
+            <table class="u-full-width">
+                <thead>
+                <tr>
+                    <th>{{ "Wallet ID"|t }}</th>
+                    <th colspan="3">{{ "Token balance"|t }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                    {% if view_url is defined %}
+                        <a href="{{ view_url }}" target="_blank">
+                    {% endif %}
+                            <i class="fa fa-university" aria-hidden="true"></i> {{ id }}
+                    {% if view_url is defined %}
+                        </a>
+                    {% endif %}
+                    </td>
+                    <td>{{ token_balance }} {{ symbol }}</td>
+                    <td>{{ ost_value|round(2, 'floor') }} OST</td>
+                    <td>&asymp; {{ usd_value|round(2, 'floor') }} USD</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        </div>
+
+        <div class="row">
+            <h3>Transaction history</h3>
+
+            <table class="u-full-width">
+                <thead>
+                <tr>
+                    <th>{{ "Timestamp"|t }}</th>
+                    <th>{{ "Transaction details"|t }}</th>
+                    <th colspan="3">{{ "Monetary value"|t }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in  craft.ostLoyaltyTokens.transactions %}
+                    <tr>
+                    {% if transaction.timestamp is defined %}
+                    {% set timestamp = (transaction.timestamp / 1000)|round(0, 'floor') %}
+                        <td>{{ timestamp|date("j M Y - G:i:s T") }}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+                        <td>
+                        {% if transaction.view_url is defined %}
+                            <a href="{{ transaction.view_url }}" target="_blank">
+                        {% endif %}
+                        {% if transaction.from_user_id == uuid %}
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sent to {{ transaction.to_user_id }}
+                        {% else %}
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Received from {{ transaction.from_user_id }}
+                        {% endif %}
+                        {% if transaction.view_url is defined %}
+                            </a>
+                        {% endif %}
+                        </td>
+                        <td>{{ transaction.amount }} {{ symbol }}</td>
+                        <td>{{ transaction.ost_value|round(2, 'floor') }} OST</td>
+                        <td>&asymp; {{ transaction.usd_value|round(2, 'floor') }} USD</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
     </div>
 {% endblock %}
-
-

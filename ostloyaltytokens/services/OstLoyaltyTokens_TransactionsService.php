@@ -104,4 +104,13 @@ class OstLoyaltyTokens_TransactionsService extends BaseApplicationComponent {
         }
         return $transactionUuid;
     }
+
+    public function getLedger() {
+        $userId = craft()->userSession->getUser()->getContent()->ost_kit_uuid;
+        OstLoyaltyTokensPlugin::log("Consulting ledger for $userId");
+        $transactions = OstLoyaltyTokensPlugin::getOstKitClient()->getLedger($userId);
+        // filter out failed transactions, they mess up the list anyway
+        return array_filter($transactions, function ($transaction) {return $transaction['status'] !== 'failed';}, ARRAY_FILTER_USE_BOTH);
+    }
+
 }

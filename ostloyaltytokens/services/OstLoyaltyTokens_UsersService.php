@@ -42,7 +42,8 @@ class OstLoyaltyTokens_UsersService extends BaseApplicationComponent {
         if ($user != null && isset($user->getContent()->ost_kit_uuid)) {
             $balance = OstLoyaltyTokensPlugin::getOstKitClient()->getCombinedBalance($user->getContent()->ost_kit_uuid);
             OstLoyaltyTokensPlugin::log("Retrieved token balance for user '$user->name' -> ".$balance['available_balance'].' '.$balance['symbol']);
-            return $balance;
+            $user = OstLoyaltyTokensPlugin::getOstKitClient()->getUser($user->getContent()->ost_kit_uuid);
+            return array_merge($balance, $user);
         }
         return array('available_balance' => 0, 'ost_value' => 0, 'usd_value' => 0, 'symbol' => 'BT', 'name' => 'Branded Token');
     }

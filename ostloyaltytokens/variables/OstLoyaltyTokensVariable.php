@@ -21,6 +21,6 @@ class OstLoyaltyTokensVariable {
      *     {{ craft.ostLoyaltyTokens.transactions }}
      */
     public function getTransactions() {
-        return craft()->ostLoyaltyTokens_transactions->getTransactionsHtmlTableRows();
+        return craft()->ostLoyaltyTokens_transactions->getLedger();
     }
 }
