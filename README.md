@@ -23,9 +23,9 @@ This version is compatible with the [OST KIT REST API v1.1](https://dev.ost.com)
 
 ## OST Loyalty Tokens Overview
 
-[OST KIT](https://kit.ost.com) gives you all the tools you need to run your blockchain-powered economy on scalable OpenST utility blockchains. OST KIT is at the time of writing under active development. The phase 2 of the closed alpha version is currently being tested in a private [Developer Proofs of Concept challenge](https://medium.com/ostdotcom/kicking-off-ost-kit-phase-ii-developer-proofs-of-concept-challenge-5f2987f92a97). This plugin is one of the participating projects.
+[OST KIT](https://kit.ost.com) gives you all the tools you need to run your blockchain-powered economy on scalable OpenST utility blockchains. OST KIT is at the time of writing under active development. Phase 3 of the closed alpha version is currently being tested in the [Wallet-Lite Developer Challenge](https://medium.com/ostdotcom/announcing-ost-kit-alpha-phase-iii-embedded-wallet-lite-challenge-4a67ea214971). This plugin is one of the participating projects.
 
-The **Loyalty Tokens** plugin builds on this toolkit to provide a blockchain-based loyalty card solution that allows any [Craft Commerce](https://craftcommerce.com) web shop to easily add a reward system based on Branded Tokens for completed orders.
+The **Craft Loyalty Tokens** plugin builds on this toolkit to provide a blockchain-based loyalty card solution that allows any [Craft Commerce](https://craftcommerce.com) web shop to easily add a reward system based on Branded Tokens for completed orders.
 
 When the plugin is enabled, three event listeners are created:
  1. an event listener on the [users.onSaveUser](https://docs.craftcms.com/v2/plugins/events-reference.html#users-onSaveUser) event 
@@ -35,7 +35,7 @@ When the plugin is enabled, three event listeners are created:
  2. an event listener on the [commerce_orders.onOrderComplete](https://craftcommerce.com/docs/events-reference#commerce_orders.onordercomplete) event to [execute a specific OST KIT 'company_to_user' transaction type](https://dev.ost.com/docs/api_transaction-types_execute.html) when a customer successfully completes on order. A reference to the OST KIT transactions is stored in an additional order field `OST KIT Transaction UUD` that must be setup first. Optionally, the available tokens can be spent as discount on an order by executing an arbitrary USD amount u2c action. 
  3. an event listener on the [commerce_payments.onRefundTransaction]() event to return tokens back to the company in case a transaction is refunded. 
  
-The plugin provides a _Token balance_ [Twig](https://twig.symfony.com/doc/2.x/templates.html) template and variable that can be easily integrated to provide an overview of all related blockchain transactions with click-through links to the order details and the transaction details on the blockchain explorer [OST View](https://view.ost.com/). It leverages the information provides by the []Balance and Ledger API](https://medium.com/ostdotcom/introducing-ost-ledger-balance-apis-to-integrate-branded-token-balances-and-transaction-histories-2420736070bb).
+The plugin provides a _Token balance_ [Twig](https://twig.symfony.com/doc/2.x/templates.html) template and variable that can be easily integrated to provide an overview of all related blockchain transactions with click-through links to the order details and the transaction details on the blockchain explorer [OST View](https://view.ost.com/). It leverages the information provided by the [Balance and Ledger API](https://medium.com/ostdotcom/introducing-ost-ledger-balance-apis-to-integrate-branded-token-balances-and-transaction-histories-2420736070bb).
 
 The plugin interacts with OST KIT via a PHP client. If you want to use this client in your own projects, you can find it here: [ost-kit-php-client](https://github.com/realJayNay/ost-kit-php-client). 
 

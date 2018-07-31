@@ -15,6 +15,8 @@ namespace Craft;
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/OstDiscounter.php';
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use ostkit\OstKitClient;
 
 class OstLoyaltyTokensPlugin extends BasePlugin {
@@ -256,6 +258,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
         if (!isset(self::$ost)) {
             // initialize the OST KIT client
             self::$ost = OstKitClient::create(self::$settings['api_key'], self::$settings['secret'], self::$settings['base_url']);
+            self::$ost->getMonolog()->pushHandler(new StreamHandler('~/ost.log', Logger::DEBUG));
         }
         return self::$ost;
     }
@@ -267,6 +270,7 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
         if (!is_string($msg)) {
             $msg = print_r($msg, true);
         }
+        self::$ost->getMonolog()->debug($msg);
         parent::log($msg, $level, $force);
     }
 

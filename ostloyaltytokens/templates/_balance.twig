@@ -63,9 +63,9 @@
                             <a href="{{ transaction.view_url }}" target="_blank">
                         {% endif %}
                         {% if transaction.from_user_id == uuid %}
-                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sent to {{ transaction.to_user_id }}
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sent to Company
                         {% else %}
-                            <i class="fa fa-sign-in" aria-hidden="true"></i> Received from {{ transaction.from_user_id }}
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Received from Company
                         {% endif %}
                         {% if transaction.view_url is defined %}
                             </a>
