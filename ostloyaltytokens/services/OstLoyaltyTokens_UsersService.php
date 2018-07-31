@@ -31,7 +31,7 @@ class OstLoyaltyTokens_UsersService extends BaseApplicationComponent {
             $msg = "Your token user ID is '" . $user->getContent()->ost_kit_uuid . "'";
             craft()->userSession->setFlash('ostLoyaltyTokens_notice', $msg);
         } catch (\Exception $e) {
-            throw new CHttpException(400, 'Internet connection not available: ' . $e->getMessage());
+            throw new HttpException(400, 'Internet connection not available: ' . $e->getMessage());
         }
 
         return $user;

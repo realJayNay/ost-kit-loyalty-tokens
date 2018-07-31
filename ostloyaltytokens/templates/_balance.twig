@@ -5,8 +5,12 @@
     <div class="row">
     {% if currentUser %}
         <div class="twelve columns">
-
-            <h1>My Wallet</h1>
+            <div class="one-half column">
+                <h1>My Wallet</h1>
+            </div>
+            <div class="one-half column">
+                <a class="button button-primary right" href="{{ token_view_url }}" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ symbol }} token details</a>
+            </div>
             <table class="u-full-width">
                 <thead>
                 <tr>
@@ -25,7 +29,7 @@
                         </a>
                     {% endif %}
                     </td>
-                    <td>{{ token_balance }} {{ symbol }}</td>
+                    <td>{{ token_balance|round(2, 'floor') }} {{ symbol }}</td>
                     <td>{{ ost_value|round(2, 'floor') }} OST</td>
                     <td>&asymp; {{ usd_value|round(2, 'floor') }} USD</td>
                 </tr>
@@ -67,7 +71,7 @@
                             </a>
                         {% endif %}
                         </td>
-                        <td>{{ transaction.amount }} {{ symbol }}</td>
+                        <td>{{ transaction.amount|round(2, 'floor') }} {{ symbol }}</td>
                         <td>{{ transaction.ost_value|round(2, 'floor') }} OST</td>
                         <td>&asymp; {{ transaction.usd_value|round(2, 'floor') }} USD</td>
                     </tr>

@@ -13,6 +13,7 @@
 
 namespace Craft;
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/OstDiscounter.php';
 
 use ostkit\OstKitClient;
 
@@ -39,32 +40,49 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
             return false;
         }
 
-        // listen for new user registrations only
+        // listen for new user registrations
         craft()->on('users.onBeforeSaveUser', function (Event $event) {
             // Only fire if new user, this should avoid an infinite loop
             $user = $event->params['user'];
             if ($event->params['isNewUser'] && craft()->request->isSiteRequest()) {
                 // retrieve the userModel from the event
                 craft()->ostLoyaltyTokens_users->createUser($user);
+                craft()->ostLoyaltyTokens_transactions->executeRegistrationTransaction($user->getContent()->ost_kit_uuid);
             }
             OstLoyaltyTokensPlugin::log("User '$user->name' has OST KIT UUID '" . $user->getContent()->ost_kit_uuid . "'");
         });
 
         // assign tokens on order completion
         craft()->on('commerce_orders.onOrderComplete', function (Event $event) {
+            foreach ($event->params['order']->adjustments as $adjustment) {
+                if ($adjustment->name === 'Loyalty token discount') {
+                    OstLoyaltyTokensPlugin::log('Executing discount transaction for Order #' . $event->params['order']);
+                    craft()->ostLoyaltyTokens_transactions->executeDiscountTransaction($event->params['order'], abs($adjustment->amount));
+                    break;
+                }
+            }
             OstLoyaltyTokensPlugin::log('Executing reward transaction for Order #' . $event->params['order']);
             craft()->ostLoyaltyTokens_transactions->executeRewardTransaction($event->params['order']);
         });
 
         // subtract tokens on order cancellation
         craft()->on('commerce_payments.onRefundTransaction', function (Event $event) {
-            OstLoyaltyTokensPlugin::log('Executing reward transaction for Order #' . $event->params['order']);
+            OstLoyaltyTokensPlugin::log('Executing refund transaction for Order #' . $event->params['order']);
             $transaction = $event->params['transaction'];
             if ($transaction->status == 'success') {
                 $transaction->order->orderStatusId = 2;
                 craft()->ostLoyaltyTokens_transactions->executeRefundTransaction($transaction->order);
             }
         });
+    }
+
+    /**
+     * Registers a custom order adjuster to spend loyalty tokens as discount.
+     *
+     * @return array of order adjusters
+     */
+    public function commerce_registerOrderAdjusters() {
+        return array(new OstDiscounter());
     }
 
     /**
@@ -190,12 +208,14 @@ class OstLoyaltyTokensPlugin extends BasePlugin {
      */
     protected function defineSettings() {
         return array(
-            'api_key' => array(AttributeType::String, 'label' => 'OST KIT - API key', 'required' => true, 'default' => null),
-            'secret' => array(AttributeType::String, 'label' => 'OST KTI - API secret', 'required' => true, 'default' => null),
-            'base_url' => array(AttributeType::String, 'label' => 'OST KTI - REST base URL', 'default' => 'https://sandboxapi.ost.com/v1.1'),
+            'api_key' => array(AttributeType::String, 'label' => 'OST KIT API key', 'required' => true, 'default' => null),
+            'secret' => array(AttributeType::String, 'label' => 'OST KTI API secret', 'required' => true, 'default' => null),
+            'base_url' => array(AttributeType::String, 'label' => 'OST KTI REST base URL', 'default' => 'https://sandboxapi.ost.com/v1.1'),
             'debug' => array(AttributeType::Bool, 'label' => 'Debug logging', 'default' => false),
-            'company_to_user_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - Company-to-user reward transaction type', 'required' => true, 'default' => 'Reward'),
-            'user_to_company_transaction_type' => array(AttributeType::String, 'label' => 'OST KIT - User-to-Company refund transaction type', 'required' => true, 'default' => 'Refund'),
+            'reward_action' => array(AttributeType::String, 'label' => 'Order Reward Action ID', 'required' => true),
+            'refund_action' => array(AttributeType::String, 'label' => 'Refund Action ID', 'required' => true),
+            'registration_action' => array(AttributeType::String, 'label' => 'Registration Bonus Action ID', 'required' => false),
+            'discount_action' => array(AttributeType::String, 'label' => 'Arbitrary USD Discount Action ID', 'required' => false),
         );
     }
 

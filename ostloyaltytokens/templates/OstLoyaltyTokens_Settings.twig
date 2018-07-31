@@ -19,7 +19,7 @@
 
 <h3>OST KIT - API configuration</h3>
 {{ forms.textField({
-    label: 'OST KIT - API key',
+    label: 'OST KIT API key',
     instructions: 'Enter the API key for your OST KIT account. This can be found in the OST KIT developer API console: https://kit.ost.com/developer-api-console.',
     id: 'api_key',
     name: 'api_key',
@@ -28,7 +28,7 @@
     value: settings['api_key']}) }}
 
 {{ forms.textField({
-    label: 'OST KIT - API secret',
+    label: 'OST KIT API secret',
     instructions: 'Enter the API secret for your OST KIT account. This can be found in the OST KIT developer API console: https://kit.ost.com/developer-api-console.',
     id: 'secret',
     name: 'secret',
@@ -38,27 +38,43 @@
 
 <h3>OST KIT - Advanced configuration</h3>
 {{ forms.textField({
-    label: 'OST KIT - REST base URL',
+    label: 'OST KIT REST base URL',
     instructions: 'Enter the base URL for the OST KIT REST endpoints.',
     id: 'base_url',
     name: 'base_url',
     value: settings['base_url']}) }}
 
 {{ forms.textField({
-    label: 'OST KIT - Reward transaction type',
-    instructions: 'Enter the name of your Branded Token\'s Company-to-User transaction type that should be applied when assigning loyalty points.',
-    id: 'company_to_user_transaction_type',
-    name: 'company_to_user_transaction_type',
+    label: 'Order Reward Action ID',
+    instructions: 'Enter the ID of your Branded Token\'s Company-to-User action that should be applied when assigning a fixed number of loyalty points for each line item in an order.',
+    id: 'reward_action',
+    name: 'reward_action',
     required: true,
-    value: settings['company_to_user_transaction_type']}) }}
+    value: settings['reward_action']}) }}
 
 {{ forms.textField({
-    label: 'OST KIT - Refund transaction type',
-    instructions: 'Enter the name of your Branded Token\'s User-to-Company transaction type that should be applied when returning loyalty points to the company in case an order payment is refunded.',
-    id: 'user_to_company_transaction_type',
-    name: 'user_to_company_transaction_type',
+    label: 'Order Refund Action ID',
+    instructions: 'Enter the ID of your Branded Token\'s User-to-Company action that should be applied when returning fixed loyalty points to the company in case an order payment is refunded.',
+    id: 'refund_action',
+    name: 'refund_action',
     required: true,
-    value: settings['user_to_company_transaction_type']}) }}
+    value: settings['refund_action']}) }}
+
+{{ forms.textField({
+    label: 'Registration Bonus Action ID',
+    instructions: 'Enter the ID of your Branded Token\'s Company-to-User action that should be applied when a new user registers. Leave empty if a registration bonus does not apply.',
+    id: 'registration_action',
+    name: 'registration_action',
+    required: false,
+    value: settings['registration_action']}) }}
+
+{{ forms.textField({
+    label: 'Arbitrary USD Discount Action ID',
+    instructions: 'Enter the ID of your Branded Token\'s User-to-Company action that should be applied when a spending tokens as discount on an order. Leave empty if a spending tokens as discounts does not apply.',
+    id: 'discount_action',
+    name: 'discount_action',
+    required: false,
+    value: settings['discount_action']}) }}
 
 <h3>Verbose logging</h3>
 {{ forms.lightswitch({
